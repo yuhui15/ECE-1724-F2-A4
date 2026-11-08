@@ -19,6 +19,7 @@ export function PaperForm({ onSubmit, authors, submitting }: PaperFormProps) {
           Title
         </label>
         {/* TODO: Add a text input for the title, styled with `inputClass` */}
+        <input type="text" name="title" id="title" className={inputClass} />
       </div>
 
       <div className="space-y-1">
@@ -26,6 +27,12 @@ export function PaperForm({ onSubmit, authors, submitting }: PaperFormProps) {
           Published In
         </label>
         {/* TODO: Add a text input for the publication venue, styled with `inputClass` */}
+        <input
+          type="text"
+          name="publishedIn"
+          id="publishedIn"
+          className={inputClass}
+        />
       </div>
 
       <div className="space-y-1">
@@ -33,6 +40,7 @@ export function PaperForm({ onSubmit, authors, submitting }: PaperFormProps) {
           Year
         </label>
         {/* TODO: Add a number input for the publication year, styled with `inputClass` */}
+        <input type="number" name="year" id="year" className={inputClass} />
       </div>
 
       <div className="space-y-1">
@@ -44,12 +52,36 @@ export function PaperForm({ onSubmit, authors, submitting }: PaperFormProps) {
             - If no authors are available, show a disabled "No authors available" option
             - Otherwise, render an option for each author
         */}
+        <select
+          multiple
+          name="authorIds"
+          id="authorIds"
+          data-testid="author-dropdown"
+          className={selectClass}
+        >
+          {authors.length === 0 ? (
+            <option disabled>No authors available</option>
+          ) : (
+            authors.map((author) => (
+              <option key={author.id} value={author.id}>
+                {author.name}
+              </option>
+            ))
+          )}
+        </select>
+        <p className="text-xs text-muted-foreground">
+          Use Ctrl+click (Windows/Linux) or Cmd+click (Mac) to select multiple
+          authors.
+        </p>
       </div>
 
       {/* TODO: Add a shadcn/ui Button labeled "Create Paper"
           - Use type="submit" and data-testid="create-paper-btn"
           - Disable the button while submitting
       */}
+      <Button type="submit" data-testid="create-paper-btn" disabled={submitting}>
+        Create Paper
+      </Button>
     </form>
   );
 }

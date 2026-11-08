@@ -29,9 +29,22 @@ export default function CreateAuthor() {
       // - On success:
       //   - Set message to "Author created successfully"
       //   - Navigate to "/" after 3 seconds
+      const result = await createAuthor(formData);
+      if (result.error) {
+        setMessage(result.error);
+        setSubmitting(false);
+        return;
+      }
+
+      setMessage("Author created successfully");
+      setTimeout(() => {
+        router.push("/");
+      }, 3000);
     } catch {
       // TODO: Set message to "Error creating author"
       // - Reset submitting to false
+      setMessage("Error creating author");
+      setSubmitting(false);
     }
   }
 
@@ -39,10 +52,12 @@ export default function CreateAuthor() {
     <main className="max-w-3xl mx-auto px-4 py-10 space-y-6">
       <div className="flex items-center justify-between">
         {/* TODO: Style this heading using Tailwind CSS with `text-2xl font-bold` */}
-        <h1>Create New Author</h1>
+        <h1 className="text-2xl font-bold">Create New Author</h1>
 
         {/* TODO: Link to home page `/` */}
-        <Link className={buttonVariants({ variant: "ghost" })}>Back</Link>
+        <Link href="/" className={buttonVariants({ variant: "ghost" })}>
+          Back
+        </Link>
       </div>
 
       <form
@@ -62,6 +77,7 @@ export default function CreateAuthor() {
             Email (optional)
           </label>
           {/* TODO: Add an email input styled with `inputClass` */}
+          <input type="email" name="email" id="email" className={inputClass} />
         </div>
 
         <div className="space-y-1">
@@ -69,16 +85,37 @@ export default function CreateAuthor() {
             Affiliation (optional)
           </label>
           {/* TODO: Add a text input for the affiliation, styled with `inputClass` */}
+          <input
+            type="text"
+            name="affiliation"
+            id="affiliation"
+            className={inputClass}
+          />
         </div>
 
         <div className="flex items-center gap-3">
           {/* TODO: Disable the button while submitting */}
-          <Button data-testid="create-author-btn" type="submit">
+          <Button
+            data-testid="create-author-btn"
+            type="submit"
+            disabled={submitting}
+          >
             Create Author
           </Button>
 
           {/* TODO: Display the status message with the required Tailwind CSS classes */}
-          {message && <p data-testid="status-message">{/* TODO */}</p>}
+          {message && (
+            <p
+              data-testid="status-message"
+              className={
+                message === "Author created successfully"
+                  ? "text-sm"
+                  : "text-sm text-red-800"
+              }
+            >
+              {message}
+            </p>
+          )}
         </div>
       </form>
     </main>

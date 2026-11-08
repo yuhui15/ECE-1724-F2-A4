@@ -10,7 +10,21 @@ datasource db {
 // TODO: Define two models same as Assignment 2
 
 model Paper {
+    id          Int      @id @default(autoincrement())
+    title       String
+    publishedIn String
+    year        Int
+    authors     Author[]
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }
 
 model Author {
+    id          Int      @id @default(autoincrement())
+    name        String
+    email       String?
+    affiliation String?
+    papers      Paper[]
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }

@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 
 async function getAuthors(): Promise<Author[]> {
   // TODO: Fetch authors from Prisma, sorted by id ascending
+  return prisma.author.findMany({ orderBy: { id: "asc" } });
 }
 
 export default async function CreatePaper() {
@@ -15,10 +16,12 @@ export default async function CreatePaper() {
     <main className="mx-auto max-w-3xl space-y-6 px-4 py-10">
       <div className="flex items-center justify-between">
         {/* TODO: Style this heading using Tailwind CSS with `text-2xl font-bold` */}
-        <h1>Create New Paper</h1>
+        <h1 className="text-2xl font-bold">Create New Paper</h1>
 
         {/* TODO: Link to home page `/` */}
-        <Link className={buttonVariants({ variant: "ghost" })}>Back</Link>
+        <Link href="/" className={buttonVariants({ variant: "ghost" })}>
+          Back
+        </Link>
       </div>
 
       <section className="rounded-lg border bg-card p-6">

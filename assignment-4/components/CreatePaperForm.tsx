@@ -32,9 +32,22 @@ export default function CreatePaperForm({ authors }: CreatePaperFormProps) {
       // - On success:
       //   - Set message to "Paper created successfully"
       //   - Navigate to "/" after 3 seconds
+      const result = await createPaper(formData);
+      if (result.error) {
+        setMessage(result.error);
+        setSubmitting(false);
+        return;
+      }
+
+      setMessage("Paper created successfully");
+      setTimeout(() => {
+        router.push("/");
+      }, 3000);
     } catch {
       // TODO: Set message to "Error creating paper"
       // - Reset submitting to false
+      setMessage("Error creating paper");
+      setSubmitting(false);
     }
   }
 
@@ -47,7 +60,18 @@ export default function CreatePaperForm({ authors }: CreatePaperFormProps) {
       />
 
       {/* TODO: Display the status message with the required Tailwind CSS classes */}
-      {message && <p data-testid="status-message">{/* TODO */}</p>}
+      {message && (
+        <p
+          data-testid="status-message"
+          className={
+            message === "Paper created successfully"
+              ? "text-sm"
+              : "text-sm text-red-800"
+          }
+        >
+          {message}
+        </p>
+      )}
     </div>
   );
 }
